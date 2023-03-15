@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200&display=swap');
+
+@layer base {
+  :root {
+    --bg-color: rgb(44, 3, 58);
+    --primary-color: rgb(129 12 168);
+    --secondary-color: rgb(193 71 233);
+    --third-color: rgb(229 184 244);
+  }
+}
