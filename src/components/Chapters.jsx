@@ -1,5 +1,7 @@
-import Chapter from './ChapterBubble.jsx';
-
+import ChapterBubble from './ChapterBubble.jsx';
+import AddChapter from './AddChapter.jsx';
+import useLocation from 'wouter/use-location';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 const fetchChapters = () => {
@@ -11,32 +13,70 @@ const fetchChapters = () => {
 };
 
 export default function Chapters() {
-  const [chapters, setChapters] = useState([]);
+  const navigate = useNavigate();
+  const [chaptersBubble, setChaptersBubble] = useState([]);
+  const [, pushLocation] = useLocation();
+  const [chapterSelected, setChapterSelected] = useState(0);
+  const [addChapter, setAddChapter] = useState(0);
+
+  const handleClickBubble = evt => {
+    setAddChapter(false);
+    let idNode = evt.target.id || evt.target.parentElement.id;
+    setChapterSelected(idNode);
+    navigate(`chapters/${idNode}`);
+  };
+
+  const handleClickAdd = () => {
+    setAddChapter(!addChapter);
+    navigate('/');
+  };
+
+  const handleClickLogo = () => {
+    navigate('/');
+  };
 
   useEffect(() => {
     const chapters = fetchChapters();
-    chapters.then(chapters => setChapters(chapters));
+    chapters.then(chapters => setChaptersBubble(chapters));
   }, []);
 
   return (
     <div className=''>
       <div className='grid grid-cols-3'>
-        <div className='pl-4 py-4 text-secondary-color font-bold text-3xl bg-primary-color text-center rounded-tr-full'>Chapters</div>
-        <div className='flex justify-center items-center text-secondary-color font-bold text-xl bg-primary-color text-center rounded-full'>Add</div>
-        <div className='py-4 text-secondary-color font-bold text-3xl bg-primary-color text-center rounded-tl-full'>PowerBrain</div>
+        <div className='pl-10 py-4 text-secondary-color font-bold text-3xl bg-primary-color rounded-tr-3xl cursor-default animate__animated animate__slideInDown'>
+          CHAPTERS
+        </div>
+        <div className='flex justify-start items-end animate__animated animate__slideInDown'>
+          <div
+            onClick={handleClickAdd}
+            className='px-4 text-secondary-color font-bold text-2xl bg-primary-color text-center rounded-tr-2xl cursor-pointer border border-primary-color hover:bg-bg-color hover:text-primary-color hover:border-primary-color hover:border transition-all duration-300'
+          >
+            +
+          </div>
+        </div>
+        <div
+          onClick={handleClickLogo}
+          className='py-4 text-secondary-color font-bold text-3xl bg-primary-color text-center rounded-tl-full cursor-pointer animate__animated animate__slideInDown'
+        >
+          PowerBrain
+        </div>
       </div>
-      <div className='pt-4 pl-4 border-t-2 border-secondary-color flex gap-3 overflow-x-scroll scroll-smooth scrollbar-hide'>
-        {chapters?.map(({ name, duration, id }) => {
+      <div className='pt-4 pl-4 border-t-2 border-primary-color flex gap-3 overflow-x-scroll scroll-smooth scrollbar-hide animate__animated animate__slideInUp'>
+        {chaptersBubble?.map(({ name, duration, id }) => {
           return (
-            <Chapter
+            <ChapterBubble
               key={id}
               id={id}
               name={name}
               duration={duration}
+              chapterSelected={chapterSelected}
+              onClick={handleClickBubble}
             />
           );
         })}
       </div>
+      {addChapter ? <AddChapter addChapter={addChapter} /> : <></>}
+      {addChapter === false ? <AddChapter addChapter={addChapter} /> : <></>}
     </div>
   );
 }
