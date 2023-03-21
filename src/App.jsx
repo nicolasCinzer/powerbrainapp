@@ -1,16 +1,21 @@
 import Chapters from './components/Chapters';
 import Chapter from './Chapter';
-import { Route } from 'wouter';
+import { Routes, Route } from 'react-router-dom';
 
 export default function App() {
   return (
     <div className='bg-bg-color h-screen font-manrope scrollbar-hide'>
-      <Routes></Routes>
-      <Chapters />
-      <Route
-        path='/chapters/:id'
-        component={Chapter}
-      />
+      <Routes>
+        <Route
+          path='/'
+          element={<Chapters />}
+        >
+          <Route
+            path='/chapters/:id'
+            element={<Chapter />}
+          />
+        </Route>
+      </Routes>
     </div>
   );
 }

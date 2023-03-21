@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 const fetchBlocks = id => {
   let url = `http://localhost:3000/chapters/${parseInt(id)}/blocks`;
@@ -9,13 +10,19 @@ const fetchBlocks = id => {
     });
 };
 
-export default function Chapter({ params }) {
-  const [id, setId] = useState(params.id);
-  useEffect(() => {
-    setId(params.id);
-    const blocks = fetchBlocks(id);
-    blocks.then(res => console.log(res));
-  }, [id]);
+const fetchPhase = ids => {};
 
-  return <div></div>;
+export default function Chapter() {
+  const { id } = useParams();
+
+  useEffect(() => {
+    const blocks = fetchBlocks(id);
+    blocks.then(res => {
+      let phasesId = [...new Set(res.map(({ phaseId }) => phaseId))];
+      /*       Promise.all([]).then(() => {});
+       */
+    });
+  }, [id]);
+  /*  */
+  return <div>{/* blocks.map({}) */}</div>;
 }

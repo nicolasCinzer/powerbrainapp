@@ -1,7 +1,6 @@
 import ChapterBubble from './ChapterBubble.jsx';
 import AddChapter from './AddChapter.jsx';
-import useLocation from 'wouter/use-location';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link, Outlet } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 const fetchChapters = () => {
@@ -15,23 +14,24 @@ const fetchChapters = () => {
 export default function Chapters() {
   const navigate = useNavigate();
   const [chaptersBubble, setChaptersBubble] = useState([]);
-  const [, pushLocation] = useLocation();
   const [chapterSelected, setChapterSelected] = useState(0);
   const [addChapter, setAddChapter] = useState(0);
 
+  console.log(addChapter);
   const handleClickBubble = evt => {
-    setAddChapter(false);
+    setAddChapter(option => (option != 0 ? false : 0));
     let idNode = evt.target.id || evt.target.parentElement.id;
     setChapterSelected(idNode);
-    navigate(`chapters/${idNode}`);
   };
 
   const handleClickAdd = () => {
     setAddChapter(!addChapter);
+    setChapterSelected(0);
     navigate('/');
   };
 
   const handleClickLogo = () => {
+    setChapterSelected(0);
     navigate('/');
   };
 
@@ -41,7 +41,7 @@ export default function Chapters() {
   }, []);
 
   return (
-    <div className=''>
+    <>
       <div className='grid grid-cols-3'>
         <div className='pl-10 py-4 text-secondary-color font-bold text-3xl bg-primary-color rounded-tr-3xl cursor-default animate__animated animate__slideInDown'>
           CHAPTERS
@@ -64,19 +64,24 @@ export default function Chapters() {
       <div className='pt-4 pl-4 border-t-2 border-primary-color flex gap-3 overflow-x-scroll scroll-smooth scrollbar-hide animate__animated animate__slideInUp'>
         {chaptersBubble?.map(({ name, duration, id }) => {
           return (
-            <ChapterBubble
+            <Link
+              to={`/chapters/${id}`}
               key={id}
-              id={id}
-              name={name}
-              duration={duration}
-              chapterSelected={chapterSelected}
-              onClick={handleClickBubble}
-            />
+            >
+              <ChapterBubble
+                id={id}
+                name={name}
+                duration={duration}
+                chapterSelected={chapterSelected}
+                onClick={handleClickBubble}
+              />
+            </Link>
           );
         })}
       </div>
+      <Outlet></Outlet>
       {addChapter ? <AddChapter addChapter={addChapter} /> : <></>}
       {addChapter === false ? <AddChapter addChapter={addChapter} /> : <></>}
-    </div>
+    </>
   );
 }
