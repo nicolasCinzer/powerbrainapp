@@ -15,7 +15,7 @@ export default function Block() {
   }, []);
 
   return (
-    <div>
+    <div className='m-4'>
       {exercises.map(({ exerciseId, series, comments, id }) => (
         <Exercise
           key={id}
