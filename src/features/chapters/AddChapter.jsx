@@ -1,18 +1,26 @@
 import { useState } from 'react';
 
-export default function addChapter({ addChapter }) {
+export default function addChapter({ addChapter, chapterAdded, setChapterAdded }) {
   const [valueName, setValueName] = useState('');
   const [valueDuration, setValueDuration] = useState('');
 
   const handleClick = () => {
+    if (!valueName || !valueDuration) return;
     fetch('http://localhost:3000/chapters', {
       method: 'POST',
-      headers: 'application/json',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: valueName,
         duration: valueDuration,
       }),
-    }).then(res => console.log(res));
+    })
+      .then(res => res.json())
+      .then(() => {
+        setChapterAdded(!chapterAdded);
+        setValueName('');
+        setValueDuration('');
+      })
+      .catch(err => console.error(err));
   };
 
   const handleChangeName = ({ target }) => {
@@ -32,17 +40,19 @@ export default function addChapter({ addChapter }) {
         className='border border-primary-color rounded-xl py-2 px-4 bg-bg-color text-primary-color text-lg col-span-4'
         type='text'
         placeholder='Name'
+        value={valueName}
         onChange={handleChangeName}
       />
       <input
         className='border border-primary-color rounded-xl py-2 px-4 bg-bg-color text-primary-color text-lg col-span-3'
         type='text'
         placeholder='Duration on Months'
+        value={valueDuration}
         onChange={handleChangeDuration}
       />
       <button
         onClick={handleClick}
-        className='bg-secondary-color border-2 border-primary-color rounded-xl text-third-color font-bold hover:border-2 hover:border-secondary-color hover:bg-bg-color hover:text-secondary-color transition-all duration-300'
+        className='font-bold border-2 border-secondary-color bg-bg-color text-secondary-color hover:bg-secondary-color hover:border-2 hover:border-primary-color rounded-xl hover:text-third-color transition-all duration-300'
       >
         ADD CHAPTER
       </button>

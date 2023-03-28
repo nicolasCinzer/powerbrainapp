@@ -11,4 +11,9 @@
     --secondary-color: rgb(193 71 233);
     --third-color: rgb(229 184 244);
   }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }

@@ -12,6 +12,7 @@ export default function Home() {
   const [chaptersBubble, setChaptersBubble] = useState([]);
   const [chapterSelected, setChapterSelected] = useState(0);
   const [addChapter, setAddChapter] = useState(0);
+  const [chapterAdded, setChapterAdded] = useState(false);
 
   const handleClickBubble = evt => {
     setAddChapter(option => (option != 0 ? false : 0));
@@ -32,7 +33,7 @@ export default function Home() {
 
   useEffect(() => {
     getChapters().then(chapters => setChaptersBubble(chapters));
-  }, []);
+  }, [chapterAdded]);
 
   return (
     <>
@@ -45,7 +46,15 @@ export default function Home() {
         chapterSelected={chapterSelected}
         handleClickBubble={handleClickBubble}
       />
-      {addChapter ? <AddChapter addChapter={addChapter} /> : <></>}
+      {addChapter ? (
+        <AddChapter
+          addChapter={addChapter}
+          chapterAdded={chapterAdded}
+          setChapterAdded={setChapterAdded}
+        />
+      ) : (
+        <></>
+      )}
       {addChapter === false ? <AddChapter addChapter={addChapter} /> : <></>}
       <Outlet />
     </>

@@ -1,3 +1,4 @@
 import buildURL from './fetch/buildURL';
+import useHorizontalScroll from './ui/useHorizontalScroll';
 
-export { buildURL };
+export { buildURL, useHorizontalScroll };
