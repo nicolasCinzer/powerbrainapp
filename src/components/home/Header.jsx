@@ -5,7 +5,7 @@ export default function Header({ handleClickAdd, handleClickLogo }) {
       <div className='flex justify-start items-end'>
         <div
           onClick={handleClickAdd}
-          className='px-4 text-secondary-color font-bold text-2xl bg-primary-color text-center rounded-tr-2xl cursor-pointer border border-primary-color hover:bg-bg-color hover:text-primary-color hover:border-primary-color hover:border transition-all duration-300'
+          className='px-4 text-secondary-color font-bold text-2xl bg-primary-color text-center rounded-tr-2xl cursor-pointer border-r-2 border-t-2 border-primary-color hover:bg-bg-color hover:text-primary-color hover:border-primary-color hover:border-r-2 hover:border-t-2 transition-all duration-300'
         >
           +
         </div>

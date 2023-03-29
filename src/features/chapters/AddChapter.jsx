@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import addChap from '../../services/addChapter';
 
 export default function addChapter({ addChapter, chapterAdded, setChapterAdded }) {
   const [valueName, setValueName] = useState('');
@@ -6,15 +7,8 @@ export default function addChapter({ addChapter, chapterAdded, setChapterAdded }
 
   const handleClick = () => {
     if (!valueName || !valueDuration) return;
-    fetch('http://localhost:3000/chapters', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name: valueName,
-        duration: valueDuration,
-      }),
-    })
-      .then(res => res.json())
+
+    addChap(valueName, valueDuration)
       .then(() => {
         setChapterAdded(!chapterAdded);
         setValueName('');
